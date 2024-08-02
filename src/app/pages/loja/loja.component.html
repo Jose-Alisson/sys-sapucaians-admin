@@ -1,0 +1,34 @@
+<header>
+    <div class="establishment">
+        <div class="icon">
+            <img [src]="'http://localhost:4000/' + establishment?.icone" alt="">
+        </div>
+        <div class="information">
+            <div class="name">
+                <h1>{{establishment?.nome}}</h1>
+            </div>
+            <ul class="status">
+                <li class="pt" [ngClass]="{'open' : establishment?.isOpen, 'close' : !establishment?.isOpen}">
+                    <span class="point"></span>
+                    &nbsp; {{establishment?.isOpen ? 'Aberto' : 'Fechado'}}
+                </li>
+                <li class="time">
+                    <i class="fi fi-rr-clock-two"></i>
+                    &nbsp; {{establishment?.waitingTime}}
+                </li>
+                <li class="deivery-time">
+                    <i class="fi fi-sr-moped"></i>
+                    &nbsp; {{establishment?.timeDelivery}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="row">
+    @if (establishment?.isOpen) {
+    <button class="btn" (click)="close()"><i class="fi fi-rr-door-closed"></i>&nbsp;Fechar Loja</button>
+    } @else{
+    <button class="btn" (click)="open()"><i class="fi fi-rr-door-open"></i>&nbsp;Abrir Loja</button>
+    }
+</div>
+<iframe src="http://localhost:4000/information.html" frameborder="0" style="height: 100%;"></iframe>

@@ -1,0 +1,239 @@
+<app-sidebar #sidebar [side]="'right'">
+    <div class="list-amount-content">
+        <div class="list-items">
+            @for(item of cart.getCart().getValue(); track $index){
+            <div class="item-product">
+                <div class="item-view">
+                    <img [src]="item.product.photoObject" />
+                </div>
+                <div class="item-description">
+                    <h3>{{ item.product.name }}</h3>
+                    <p class="descri">
+                        @if ((item?.additional || []).length > 0) {
+                        <strong>({{getAttributeList(item?.additional)}})</strong><br>
+                        {{item?.observation}}
+
+                        } @else {
+                        {{ item.product.description }}
+                        }
+                    </p>
+                    <div class="unique" style="margin-top: 4px;">
+                        <h4>{{ (getAmountValue(item)) | currency : "BRL" : "symbol-narrow" }}</h4>
+                        <div class="counter">
+                            <span class="minus" (click)="decrementAmount(item)">
+                                <i class="fi fi-rr-minus-small"></i>
+                            </span>
+                            <div class="text">{{item.quantity}}</div>
+                            <span class="more" (click)="incrementAmount(item)">
+                                <i class="fi fi-rr-plus-small"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+        <div style="display: flex;flex-direction: column;gap: 10px;">
+            <div class="subtotal" style="padding: 0em 1em;">
+                <div class="message">
+                    <span>Sub-Total</span>
+                    <p>{{ cart.getCart().getValue().length }} {{ cart.getCart().getValue().length == 1 ? "item" :
+                        "items" }}</p>
+                </div>
+                <div class="value">
+                    <h3>{{ totalCart | currency : "BRL" : "symbol-narrow" }}</h3>
+                </div>
+            </div>
+            <button class="btn-buy" (click)="salvar()">Salvar</button>
+        </div>
+    </div>
+</app-sidebar>
+
+<!-- <section class="banner">
+    <img src="../../../assets/banner.jpg" alt="">
+</section>
+<header>
+    <div class="establishment">
+        <div class="icon">
+            <img src="../../../assets/suculentus.jpg" alt="">
+        </div>
+        <div class="information">
+            <div class="name">
+                <h1>Suculetos Burger</h1>
+            </div>
+            <ul class="status">
+                <li class="pt"
+                    [ngClass]="{'open' : establishment.getEstablishment().isOpen, 'close' : !establishment.getEstablishment().isOpen}">
+                    <span class="point"></span>
+                    &nbsp; {{establishment.getEstablishment().isOpen ? 'Aberto' : 'Fechado'}}
+                </li>
+                <li class="time">
+                    <i class="fi fi-rr-clock-two"></i>
+                    &nbsp; {{establishment.getEstablishment().waitingTime}}
+                </li>
+                <li class="deivery-time">
+                    <i class="fi fi-sr-moped"></i>
+                    &nbsp; {{establishment.getEstablishment().timeDelivery}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</header> -->
+<section class="box" id="top">
+    <div style="display: flex;justify-content: space-between;gap: 30px;align-items: center;">
+        <div class="search-box">
+            <span class="icon">
+                <i class="fi fi-rr-search"></i>
+            </span>
+            <input type="text" placeholder="Pesquise oque deseja" [formControl]="searchControl"
+                (keyup)="search($event)">
+        </div>
+        @if(cart.getCart().getValue().length > 0){
+        <div class="icon-cart" (click)="sidebar.toogleActive()">
+            <i class="fi fi-rr-grocery-bag"></i>
+            <span class="text">{{totalCart | currency : 'BRL'}}</span>
+        </div>
+        }
+    </div>
+    <div class="slider">
+        @for (categoria of getCategorysName(); track $index) {
+        <span (click)="scrollToCategory(categoria)">{{categoria}}</span>
+        }
+    </div>
+</section>
+<section class="box">
+    @if(s != ''){
+    <div class="list result" style="margin-top: 20px;">
+        @for (item of searchResult; track $index) {
+        <app-modal [title]="item.name" #modal (closeEvent)="clean()">
+            <div class="item" style="color: black;">
+                <div class="view">
+                    <img [src]="item.photoObject" alt="">
+                </div>
+                <div class="item-content">
+                    <div class="name">
+                        <h3 class="title">{{item?.name}}</h3>
+                    </div>
+                    <div class="information">
+                        <p class="description">{{item?.description}}</p>
+                        <h3 class="price">{{item?.price | currency : 'BRL'}}</h3>
+                        <div class="line"></div>
+
+                        @if ((item?.additional || []).length > 0) {
+                        <div class="additionals">
+                            @for (additional of item?.additional; track $index) {
+                            <app-adicionais #add [additional]="additional"></app-adicionais>
+                            }
+                        </div>
+                        }
+                        <h3>Observação</h3>
+                        <textarea class="observation" name="" id=""
+                            placeholder="(Opcional) Adicione um observção ao seu pedido"
+                            [formControl]="observation"></textarea>
+                        <p class="max">{{observation.value?.length}} / 255</p>
+                    </div>
+                    <div class="sub-total">
+                        @if(establishment?.isOpen){
+                        <div class="counter">
+                            <span class="minus" (click)="decrement()">
+                                <i class="fi fi-rr-minus-small"></i>
+                            </span>
+                            <div class="text">{{counter}}</div>
+                            <span class="more" (click)="increment()">
+                                <i class="fi fi-rr-plus-small"></i>
+                            </span>
+                        </div>
+                        <button (click)="comprar(item); modal.close()">{{getPrice(item) | currency : 'BRL'}}
+                            Comprar</button>
+                        } @else {
+                        &nbsp;
+                        <p class="price-center">Preço: {{getPrice(item) | currency : 'BRL'}}</p>
+                        &nbsp;
+                        }
+                    </div>
+                </div>
+            </div>
+        </app-modal>
+
+        <div class="card" (click)="modal.active = true">
+            <div class="card-img">
+                <img [src]="item.photoObject" alt="">
+            </div>
+            <div class="card-content">
+                <h3 class="title">{{item.name}}</h3>
+                <p class="description">{{item.description}}</p>
+                <h3 class="price">{{item.price | currency : 'BRL'}}</h3>
+            </div>
+        </div>
+        }
+    </div>
+    } @else {
+    @for (categoria of categorias; track $index) {
+    <h1 class="category-title" [id]="'category-' + categoria.name">{{categoria.name}}</h1>
+    <div class="list result">
+        @for (item of categoria.products; track $index) {
+        <app-modal [title]="item.name" #modal (closeEvent)="clean()">
+            <div class="item">
+                <div class="view">
+                    <img [src]="item.photoObject" alt="">
+                </div>
+                <div class="item-content">
+                    <div class="name">
+                        <h3 class="title">{{item?.name}}</h3>
+                    </div>
+                    <div class="information">
+                        <p class="description">{{item?.description}}</p>
+                        <h3 class="price">{{item?.price | currency : 'BRL'}}</h3>
+                        <div class="line"></div>
+
+                        @if ((item?.additional || []).length > 0) {
+                        <div class="additionals">
+                            @for (additional of item?.additional; track $index) {
+                            <app-adicionais #add [additional]="additional"></app-adicionais>
+                            }
+                        </div>
+                        }
+                        <h3>Observação</h3>
+                        <textarea class="observation" name="" id=""
+                            placeholder="(Opcional) Adicione um observção ao seu pedido"
+                            [formControl]="observation"></textarea>
+                        <p class="max">{{observation.value?.length}} / 255</p>
+                    </div>
+                    <div class="sub-total">
+                        @if(establishment.isOpen){
+                        <div class="counter">
+                            <span class="minus" (click)="decrement()">
+                                <i class="fi fi-rr-minus-small"></i>
+                            </span>
+                            <div class="text">{{counter}}</div>
+                            <span class="more" (click)="increment()">
+                                <i class="fi fi-rr-plus-small"></i>
+                            </span>
+                        </div>
+                        <button (click)="comprar(item); modal.close()">{{getPrice(item) | currency : 'BRL'}}
+                            Comprar</button>
+                        } @else {
+                        &nbsp;
+                        <p class="price-center">Preço: {{getPrice(item) | currency : 'BRL'}}</p>
+                        &nbsp;
+                        }
+                    </div>
+                </div>
+            </div>
+        </app-modal>
+
+        <div class="card" (click)="modal.active = true">
+            <div class="card-img">
+                <img [src]="item.photoObject" alt="">
+            </div>
+            <div class="card-content">
+                <h3 class="title">{{item.name}}</h3>
+                <p class="description">{{item.description}}</p>
+                <h3 class="price">{{item.price | currency : 'BRL'}}</h3>
+            </div>
+        </div>
+        }
+    </div>
+    }
+    }
+</section>

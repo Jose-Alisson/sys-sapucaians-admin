@@ -1,0 +1,9 @@
+<div class="fade" (click)="active = false"></div>
+<div class="side-bar" [ngClass]="{'left' : side === 'left', right : side === 'right'}">
+  <div class="side-header">
+    <span class="close" (click)="active = false">
+      <i class="fi fi-rr-cross-small"></i>
+    </span>
+  </div>
+  <ng-content></ng-content>
+</div>

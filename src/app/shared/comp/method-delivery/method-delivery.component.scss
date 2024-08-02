@@ -1,0 +1,120 @@
+@import '../../../../variables';
+
+:host{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.detacheds {
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 150px));
+    grid-template-rows: repeat(auto-fit, minmax(120px, 150px));
+
+    &.select .detached:not(.selected):hover {
+        animation: floating 0.5s infinite;
+        box-shadow: 0px 0px 0px  1px color-mix(in srgb, #feca57 75%, transparent);
+        cursor: pointer;
+    }
+}
+
+.detached {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    background: #242424;
+    border: 2px solid transparent;
+    transition: 0.2s;
+
+    img {
+        max-height: 70px;
+        object-fit: contain;
+    }
+
+    .title {
+        font-weight: 500;
+    }
+
+    &.selected {
+        background: #eeeeee;
+        color: black !important;
+    }
+}
+
+@keyframes floating {
+    0%{
+        transform: translateY(0px);
+    }
+
+    50%{
+        transform: translateY(-6px);
+    }
+
+    100%{
+        transform: translateY(0px);
+    }
+}
+
+.box{
+    background: #eeeeee;
+    padding: 24px 8px 12px;
+    border-radius: 7px;
+    color: black;
+    border: 1px solid #dcdcdc;
+
+    .title{
+
+        .icon{
+            margin-right: 7px;
+        }
+
+        align-items: center;
+        margin-top: -48px;
+        padding: 8px;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0px 2px 12px rgba(128 128 128 / 20%);
+        font-size: 60%;
+        display: flex;
+    }
+
+    .row{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;align-items: center;
+    }
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 400px;
+    max-width: 100%;
+}
+
+@media screen and (max-width: 510px) {
+    .form{
+        flex-grow: 1;
+    }
+}
+
+.modal-content {
+    padding: 16px;
+
+
+    button.completed{
+        padding: 10px 16px;
+        border: 0;
+        cursor: pointer;
+        gap: 10px;
+        border-radius: 7px;
+        cursor: pointer;
+        background: color-mix(in srgb, $color-primary 70%, transparent);
+        color: white;
+        box-shadow: 1px 2px 10px color-mix(in srgb, $color-primary 50%, transparent);
+    }
+}

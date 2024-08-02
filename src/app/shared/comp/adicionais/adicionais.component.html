@@ -1,0 +1,49 @@
+<ng-template #listAdditionals>
+    <div class="additional-wrapper" #wrapper>
+        <header (click)="wrapper.classList.toggle('active')">
+            <div class="title">
+                <h3 class="name">{{additional.name }}</h3>
+                <div class="selections">
+                    @if (additional.max > 0) {
+                    Selecione até {{additional.max}} Opções,
+                    } @else {
+                    Selecione até {{additional.additional.length}} Opções,
+                    }
+
+                    @if(additional.min > 0){
+                    Minimo {{additional.min}}
+                    }
+                </div>
+            </div>
+            @if (additional.min > 0) {
+            <div style="flex-grow: 1;">
+                <div class="required" style="float: right;">
+                    Obrigatório
+                </div>     
+            </div>
+            }
+            <div class="close-toggle">
+                <i class="fi fi-rr-caret-up"></i>
+            </div>
+        </header>
+        <div class="additional-content" [ngStyle]="getSize(additionals, wrapper.classList.contains('active'))">
+            <div class="additionals" #additionals>
+                @for (item of additional.additional; track $index) {
+                <div class="additional" [ngClass]="{'disabled' : desative(item), 'active': active(item)}"
+                    desativAdicionais [additional]="item" [select]="select" [max]="additional.max"
+                    [desactive]="desactive">
+                    <input type="checkbox" name="" id="" [checked]="active(item)">
+                    <div>
+                        <p class="name">{{item.name}}</p>
+                        @if (item.price > 0) {
+                        <h4>{{item?.price | currency: 'BRL'}}</h4>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-container *ngTemplateOutlet="listAdditionals"></ng-container>

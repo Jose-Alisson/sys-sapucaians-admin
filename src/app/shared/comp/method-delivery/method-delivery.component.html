@@ -1,0 +1,63 @@
+<app-modal [title]="'Endereço'" #modalEndereco>
+    <div class="modal-content">
+        <div class="form" [formGroup]="addressForm">
+            <div class="box-field">
+                <div class="field">
+                    <input id="rua" type="text" placeholder="Nome da Rua" required formControlName="rua">
+                    <label for="rua">Nome da Rua</label>
+                </div>
+                <div class="validate"></div>
+            </div>
+            <div class="box-field">
+                <div class="field">
+                    <input id="numero" type="text" placeholder="Número da Residencia" required formControlName="numero">
+                    <label for="numero">Número da Residencia</label>
+                </div>
+                <div class="validate"></div>
+            </div>
+            <div class="box-field">
+                <div class="field">
+                    <textarea type="text" placeholder="Complemento" formControlName="complemento"></textarea>
+                </div>
+                <div class="validate"></div>
+            </div>
+            <button class="completed" (click)="concluirEndereco()">Concluido!</button>
+        </div>
+    </div>
+</app-modal>
+
+<ng-template #selectDeliveryMethod>
+    <div class="box">
+        <div class="title">
+            <div class="icon">
+                <i class="fi fi-rr-motorcycle"></i>
+            </div>
+            <div>
+                <p><strong>Tipo de entrega</strong></p>
+                <p>Escolha a opção de entrega: entrega em domicílio ou retirada na loja.</p>
+            </div>
+        </div>
+        <div class="row">
+            <p>Preferencia:</p>
+            <app-dropdown #drop [title]="'Opções'" [options]="['Loja', 'Delivery',]" (selectEvent)="openModal($event)"></app-dropdown>
+        </div>
+        @if (address) {
+        <div class="row">
+            <div class="address">
+                <h2>{{address.rua}}@if (address.numero; as numero) {, {{numero}}} </h2>
+                <p>{{address.complemento}}</p>
+            </div>
+        </div>
+        }
+        <!-- @if (drop.select === 'Delivery') {
+        <ng-container *ngTemplateOutlet="cep.searchCep"></ng-container>
+        <div style="margin-top: 5px;">
+            <ng-container *ngTemplateOutlet="cep.viewCepInformation"></ng-container>
+        </div>
+        } -->
+    </div>
+</ng-template>
+
+<!-- <app-dropdown [title]="'Tipo de pagamento'"></app-dropdown> -->
+
+<ng-container *ngTemplateOutlet="selectDeliveryMethod"></ng-container>

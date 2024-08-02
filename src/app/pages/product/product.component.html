@@ -1,0 +1,144 @@
+<ng-template #addForm>
+    <div class="form fc" [formGroup]="addtionalForm">
+        <div class="box-field">
+            <div class="field">
+                <input id="name" type="text" placeholder="Nome do Adicional" required formControlName="name">
+                <label for="name">Nome do Adicional</label>
+            </div>
+            <div class="validate"></div>
+        </div>
+        <div class="box-field">
+            <div class="field">
+                <input id="min" type="text" placeholder="Quantidade Minimo" required formControlName="min">
+                <label for="min">Quantidade Minimo</label>
+            </div>
+            <div class="validate"></div>
+        </div>
+        <div class="box-field">
+            <div class="field">
+                <input id="min" type="text" placeholder="Quantidade Maxima" required formControlName="max">
+                <label for="min">Quantidade Maxima</label>
+            </div>
+            <div class="validate"></div>
+        </div>
+    </div>
+</ng-template>
+
+<app-modal #mCreate [title]="'Criar adicional'">
+    <div class="modal-content fc" style="padding: 12px; width: 400px;">
+        <ng-container *ngTemplateOutlet="addForm"></ng-container>
+        <button class="btn" (click)="addAditionalToProduct()">Adicionar</button>
+    </div>
+</app-modal>
+
+<ng-template #createTP>
+    <div class="create">
+        <div style="display: flex;justify-content: space-between;">
+            <button (click)="page='view';clean()" class="btn"><i class="fi fi-rr-arrow-left"></i>&nbsp;Voltar</button>
+            <button class="btn" (click)="save()"><i class="fi fi-rr-floppy-disk-pen"></i>&nbsp;Salvar</button>
+        </div>
+        <div class="box fc">
+            <app-upload-file #uploadFile [img]="product?.photoObject"></app-upload-file>
+            <div class="form" [formGroup]="productForm">
+                <!-- <div class="box-field">
+                    <div class="field">
+                        <input id="name" type="text" placeholder="Nome do produto" required formControlName="name">
+                        <label for="name">Nome do produto</label>
+                    </div>
+                    <div class="validate"></div>
+                </div> -->
+                <app-input title="Nome do produto" formControlName="name">
+                    <app-validate validatorName="required" message="O Campo é obrigatorio" [viewAllError]="viewAllErrors"></app-validate>
+                </app-input>
+
+                <div class="box-field">
+                    <div class="field">
+                        <textarea id="description" type="text" placeholder="Descrição"
+                            formControlName="description"></textarea>
+                        <label for="description">Descrição</label>
+                    </div>
+                    <div class="validate"></div>
+                </div>
+                <div class="unique">
+                    <!-- <div class="box-field">
+                        <div class="field">
+                            <input id="prce" type="text" placeholder="Preço" required formControlName="price">
+                            <label for="price">Preço</label>
+                        </div>
+                        <div class="validate"></div>
+                    </div> -->
+                    <app-input title="preço" formControlName="price">
+                        <app-validate validatorName="required" message="O Campo é obrigatorio" [viewAllError]="viewAllErrors"></app-validate>
+                    </app-input>
+                    <!-- <div class="box-field">
+                        <div class="field">
+                            <input id="category" type="text" placeholder="category" required formControlName="category">
+                            <label for="category">Category</label>
+                        </div>
+                        <div class="validate"></div>
+                    </div> -->
+                    <app-input title="Categoria" formControlName="category">
+                        <app-validate validatorName="required" message="O Campo é obrigatorio" [viewAllError]="viewAllErrors"></app-validate>
+                    </app-input>
+                </div>
+            </div>
+        </div>
+
+        <div class="box fc">
+            <button class="btn not-span" (click)="mCreate.active = true"><i
+                    class="fi fi-rr-apps-add"></i>&nbsp;Adicionar</button>
+            @for (item of product?.additional; track $index) {
+            <app-adicionais-create [title]="item.name" [additional]="item" (removerEvent)="remover($event)"></app-adicionais-create>
+            }
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #view>
+    <section class="banner" [ngStyle]="{'background-image' : 'url(http://localhost:4000/' + establishment?.banner + ')'}">
+        <h1>{{establishment?.nome}}</h1>
+    </section>
+    <section class="categorys">
+        <div class="tool">
+            <div class="side-left">
+
+            </div>
+            <div class="side-right">
+                <button class="btn" (click)="page = 'create'"><i class="fi fi-rr-apps-add"></i>&nbsp;Adicionar
+                    Produtos</button>
+            </div>
+        </div>
+        <div class="list">
+            @for (category of categorys; track $index) {
+            <div class="category">
+                <!-- <h1 class="category-title">{{category.name}}</h1> -->
+                <div class="products">
+                    @for (item of category.products; track $index) {
+                    <div class="card" (click)="loadProduct(item)">
+                        <div class="card-img">
+                            <img [src]="item.photoObject" alt="">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="title">{{item.name}}</h3>
+                            <p class="description">{{item.description}}</p>
+                            <h3 class="price">{{item.price | currency : 'BRL'}}</h3>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+</ng-template>
+
+@switch (page) {
+@case ('view') {
+<ng-container *ngTemplateOutlet="view"></ng-container>
+}
+@case ('create') {
+<ng-container *ngTemplateOutlet="createTP"></ng-container>
+} @default {
+<ng-container *ngTemplateOutlet="view"></ng-container>
+}
+}

@@ -1,0 +1,23 @@
+.validate {
+    font-size: 16px;
+    color: tomato;
+
+    div {
+        display: flex;
+        gap: 5px;
+        padding: 5px 10px;
+        border-radius: 7px;
+        background: color-mix(in srgb, tomato 10%, transparent 80%);
+    }
+}
+
+
+.validate-message {
+    font-size: 16px;
+    color: tomato;
+    display: flex;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 7px;
+    background: color-mix(in srgb, tomato 10%, transparent 80%);
+}

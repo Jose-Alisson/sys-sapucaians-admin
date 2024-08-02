@@ -1,0 +1,117 @@
+:host{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.row{
+    display: flex;
+    gap: 12px;
+}
+
+header {
+    // width: 90%;
+    // margin: auto;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+
+    .establishment {
+        display: flex;
+        padding: 15px;
+        align-items: center;
+
+        .name {
+            font-size: 28px;
+        }
+
+        .icon {
+            margin-right: 25px;
+
+            img {
+                // margin-top: -50px;
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+                border-radius: 100%;
+                padding: 5px;
+                background: white;
+            }
+        }
+
+        .information {
+            div {
+                display: flex;
+                gap: 15px;
+            }
+
+            .status {
+                display: flex;
+                list-style: none;
+                gap: 15px;
+                color: rgba(0 0 0 / 70%);
+                font-weight: 600;
+
+                &>li {
+                    display: flex;
+                    align-items: center;
+
+                    i {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: column;
+                    }
+                }
+            }
+
+            .pt {
+                display: flex;
+                align-items: center;
+
+                .point::before {
+                    content: '';
+                    display: block;
+                    width: 15px;
+                    height: 15px;
+                    border-radius: 50%;
+                    display: block;
+                    background: #4dda56;
+                }
+
+                &.open {
+                    color: #4dda56;
+
+                    .point::before {
+                        background: #4dda56;
+                    }
+                }
+
+                &.close {
+                    color: #a90101;
+
+                    .point::before {
+                        background: #a90101;
+                    }
+                }
+            }
+        }
+    }
+
+    .info{
+        display: flex;
+        align-items: center;
+        font-size: 1em;
+        gap: 12px;
+
+        i {
+            display: flex;
+            flex-direction: column;
+            font-size: 1.5em;
+        }
+
+        &:hover h2 {
+            text-decoration: underline;
+        }
+    }
+}

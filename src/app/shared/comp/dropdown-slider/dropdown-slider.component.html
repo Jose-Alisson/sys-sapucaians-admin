@@ -1,0 +1,11 @@
+<div class="wrapper" #dropdown>
+    <div class="wrapper-header" (click)="active = !active" [ngClass]="{'active' : active}" #wrapper>
+        <span class="title">{{title}}</span>
+        <span class="arrow"><i class="fi fi-rr-caret-up"></i></span>
+    </div>
+    <div class="wrapper-body" [ngStyle]="getSize(content, wrapper.classList.contains('active'))">
+        <div class="content" #content >
+             <ng-content></ng-content>
+        </div>
+    </div>
+</div>

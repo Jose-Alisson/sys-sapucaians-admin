@@ -1,0 +1,122 @@
+<ng-template #addForm>
+    <div class="form fc" [formGroup]="addManagerForm">
+        <!-- <div class="box-field">
+            <div class="field">
+                <input id="name" type="text" placeholder="Nome do Adicional" required formControlName="name">
+                <label for="name">Nome do Adicional</label>
+            </div>
+            <div class="validate"></div>
+        </div> -->
+        <!-- <div class="box-field">
+            <div class="field">
+                <input id="min" type="text" placeholder="Quantidade Minimo" required formControlName="min">
+                <label for="min">Quantidade Minimo</label>
+            </div>
+            <div class="validate"></div>
+        </div> -->
+        <!-- <div class="box-field">
+            <div class="field">
+                <input id="min" type="text" placeholder="Quantidade Maxima" required formControlName="max">
+                <label for="min">Quantidade Maxima</label>
+            </div>
+            <div class="validate"></div>
+        </div> -->
+        <app-input title="Nome do Adicional" formControlName="name">
+            <app-validate validatorName="required" message="Campo obrigatorio"></app-validate>
+        </app-input>
+        <app-input title="Quantidade Minima" formControlName="min" type="number">
+            <app-validate validatorName="required" message="Campo obrigatorio"></app-validate>
+            <app-validate [control]="addManagerForm" validatorName="minMaxError" message="O valor minimo não pode exceder o valor maximo"></app-validate>
+        </app-input>
+        <app-input title="Quantidade Maxima" formControlName="max" type="number">
+            <app-validate validatorName="required" message="Campo obrigatorio"></app-validate>
+            <app-validate validatorName="maxListSizeError" message="Limite excedido"></app-validate>
+        </app-input>
+    </div>
+</ng-template>
+
+<app-modal #mEditAddManager [title]="'Editar Adicional'">
+    <div class="modal-content fc" style="padding: 12px; width: 500px;">
+        <ng-container *ngTemplateOutlet="addForm"></ng-container>
+        <div class="row">
+            <button class="btn-darken" (click)="remover()"><i
+                class="fi fi-rr-apps-delete"></i>&nbsp;Remover</button>
+                <button class="btn" (click)="saveAdicionalManager()">Salvar</button>
+        </div>
+    </div>
+</app-modal>
+
+<ng-template #addtionalF>
+    <div class="form fc" [formGroup]="additionalForm">
+        <div class="box-field">
+            <div class="field">
+                <input id="name" type="text" placeholder="Nome" required formControlName="name">
+                <label for="name">Nome</label>
+            </div>
+            <div class="validate"></div>
+        </div>
+        <div class="box-field">
+            <div class="field">
+                <input id="price" type="text" placeholder="Preço" required formControlName="price">
+                <label for="price">Preço</label>
+            </div>
+            <div class="validate"></div>
+        </div>
+    </div>
+</ng-template>
+
+<app-modal #mCreate [title]="'Adicionar de Adicional'" (closeEvent)="clean()">
+    <div class="modal-content">
+        <ng-container *ngTemplateOutlet="addtionalF"></ng-container>
+        <button class="btn" (click)="add()"><i class="fi fi-rr-apps-add"></i>&nbsp;Criar</button>
+    </div>
+</app-modal>
+
+<app-modal #mEdit [title]="'Editar Adicional'" (closeEvent)="clean()">
+    <div class="modal-content">
+        <ng-container *ngTemplateOutlet="addtionalF"></ng-container>
+        <div class="row">
+            <button class="btn-darken" (click)="removerAdicional()"><i
+                    class="fi fi-rr-apps-delete"></i>&nbsp;Remover</button>
+            <button class="btn" (click)="save()"><i class="fi fi-rr-apps-add"></i>&nbsp;Salvar</button>
+        </div>
+    </div>
+</app-modal>
+
+<div class="additional-wrapper" #wrapper>
+    <header (click)="wrapper.classList.toggle('active')">
+        <div class="title" (click)="loadEditAddManager()">
+            <h3 class="name">{{additional.name }}</h3>
+            <div class="selections">
+                @if (additional.max > 0) {
+                até {{additional.max}} Opções,
+                } @else {
+                até {{additional.additional.length}} Opções,
+                }
+                @if(additional.min > 0){
+                Minimo {{additional.min}}
+                }
+            </div>
+        </div>
+
+        <div class="close-toggle">
+            <i class="fi fi-rr-caret-up"></i>
+        </div>
+    </header>
+    <div class="additional-content" [ngStyle]="getSize(additionals, wrapper.classList.contains('active'))">
+        <div class="additionals" #additionals>
+            @for (item of additional.additional; track $index) {
+            <div class="additional" (click)="loadAdicional(item)">
+                <!-- <input type="checkbox" name="" id="" [checked]="active(item)"> -->
+                <div>
+                    <p class="name">{{item.name}}</p>
+                    @if (item.price > 0) {
+                    <h4>{{item?.price | currency: 'BRL'}}</h4>
+                    }
+                </div>
+            </div>
+            }
+            <button class="btn" (click)="mCreate.active = true"><i class="fi fi-rr-plus"></i></button>
+        </div>
+    </div>
+</div>

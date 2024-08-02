@@ -1,0 +1,18 @@
+<div class="wrapper" #dropdown>
+    <div class="wrapper-header" (click)="active = !active" [ngClass]="{'active' : active}" #wrapper>
+        <span class="title">{{title}}</span>
+        <span class="arrow"><i class="fi fi-rr-caret-up"></i></span>
+    </div>
+    <div class="wrapper-body floating">
+        <!-- @if (isExistContent) {
+        <ng-content></ng-content>[ngClass]="{'floating' : !isExistContent}"
+        } 
+        @else{ -->
+        <ul>
+            @for (option of options; track $index) {
+            <li (click)="title = option;select = option ; sinalizar(); active = false">{{option}}</li>
+            }
+        </ul>
+        <!-- } -->
+    </div>
+</div>

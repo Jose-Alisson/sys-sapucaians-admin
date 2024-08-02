@@ -1,0 +1,10 @@
+<div class="fade" (click)="active = false;closeEvent.emit()"></div>
+<div class="modal">
+    <div class="modal-header">
+        <h3>{{title}}</h3>
+        <span class="close" (click)="close()">
+            <i class="fi fi-rr-cross-small"></i>
+        </span>
+    </div>
+    <ng-content></ng-content>
+</div>

@@ -1,0 +1,9 @@
+<section class="file" (drag)="onDragLeave($event)" (drop)="onDrop($event)">
+    <input type="file" (change)="onFileSelected($event)">
+    @if (img) {
+    <img [src]="img" alt="">
+    } @else {
+    <i class="fi fi-rr-file-upload"></i>
+    <h1>Selecione um arquivo</h1>
+    }
+</section>

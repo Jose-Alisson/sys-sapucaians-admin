@@ -1,0 +1,23 @@
+@import url('http://localhost:4000/style.css');
+
+$font-maior : 'Hind Vadodara';
+$font-meio : 'Cormorant Garamond';
+$font-menor : 'Mulish';
+
+$color-bg: var(--color-bg);
+$color-primary: var(--color-primary);
+$color-second: var(--color-second);
+$color-third: var(--color-third);
+// $color-bg: #F6E6E1;       // Fundo claro com tom de laranja
+// $color-primary: #FF6F00;  // Tom principal de laranja
+// $color-second: #E65100;   // Tom secundário de laranja
+// $color-third: #121212;    // Tom terciário de preto
+
+$gray-80: rgba(0 0 0 / 80%);
+$gray-70: rgba(0 0 0 / 70%);
+$gray-60: rgba(0 0 0 / 60%);
+$gray-50: rgba(0 0 0 / 50%);
+$gray-40: rgba(0 0 0 / 40%);
+$gray-30: rgba(0 0 0 / 30%);
+$gray-20: rgba(0 0 0 / 20%);
+$gray-10: rgba(0 0 0 / 10%);
