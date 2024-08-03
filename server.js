@@ -1,14 +1,20 @@
-const express = require('express')
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const port = process.env?.['PORT'] || 5000
-const app = express()
+const app = express();
+const port = 5050;
 
-app.use(express.static(__dirname + "/dist/joliny-admin/browser/" ))
+// Servir arquivos estáticos da pasta 'public'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.get("**", (req,res) => {
-    res.sendFile(__dirname + "/dist/joliny-admin/browser/index.html")
-})
+app.use(express.static(path.join(__dirname, '/dist/joliny-admin/browser/')));
+
+app.get('*/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/dist/joliny-admin/browser/', 'index.html'));
+});
 
 app.listen(port, () => {
-    console.log(`Servidor iniciou na porta: ${port}`)
-})
+  console.log(`Server is running on http://localhost:${port}`);
+});
