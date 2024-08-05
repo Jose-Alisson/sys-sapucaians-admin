@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { InputComponent } from "../../shared/comp/form/input/input.component";
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidateComponent } from "../../shared/comp/form/validate/validate.component";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-loja',
@@ -13,6 +14,8 @@ import { ValidateComponent } from "../../shared/comp/form/validate/validate.comp
   styleUrl: './loja.component.scss'
 })
 export class LojaComponent {
+
+  protected API_MAIN = environment.API_MAIN
 
   private form = inject(FormBuilder)
 

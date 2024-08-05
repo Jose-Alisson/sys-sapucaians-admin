@@ -15,6 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { EstablishmentService } from '../../shared/services/establishment/establishment.service';
 import { InputComponent } from "../../shared/comp/form/input/input.component";
 import { ValidateComponent } from "../../shared/comp/form/validate/validate.component";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-product',
@@ -25,6 +26,7 @@ import { ValidateComponent } from "../../shared/comp/form/validate/validate.comp
 })
 export class ProductComponent {
 
+  protected API_MAIN = environment.API_MAIN
 
   @ViewChild("uploadFile")
   uploadFile?: UploadFileComponent

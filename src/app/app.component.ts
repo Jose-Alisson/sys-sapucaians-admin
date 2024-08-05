@@ -3,6 +3,7 @@ import { ActivatedRoute, ActivationEnd, NavigationEnd, Router, RouterModule, Rou
 import { PedidoService } from './shared/services/pedido/pedido.service';
 import { CommonModule } from '@angular/common';
 import { EstablishmentService } from './shared/services/establishment/establishment.service';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,8 @@ import { EstablishmentService } from './shared/services/establishment/establishm
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  
+  protected API_MAIN = environment.API_MAIN
 
   end = ""
 

@@ -2,15 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { io } from 'socket.io-client';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstablishmentService {
 
-  private soc = io('ws://localhost:4000')
+  private soc = io(`${environment.API_MAIN}`)
 
-  private URL = `http://localhost:4000/establishment`
+  private URL = `${environment.API_MAIN}/establishment`
   private http = inject(HttpClient)
 
   inf = new BehaviorSubject<any>(null)

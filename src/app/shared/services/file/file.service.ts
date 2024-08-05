@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { inject, Injectable } from '@angular/core';
 export class FileService {
 
   private http = inject(HttpClient)
-  private URL = `http://localhost:4000`
+  private URL = `${environment.API_MAIN}`
 
   constructor() { }
 

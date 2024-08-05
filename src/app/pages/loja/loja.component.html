@@ -1,7 +1,7 @@
 <header>
     <div class="establishment">
         <div class="icon">
-            <img [src]="'http://localhost:4000/' + establishment?.icone" alt="">
+            <img [src]="API_MAIN+ '/' + establishment?.icone" alt="">
         </div>
         <div class="information">
             <div class="name">
@@ -31,4 +31,4 @@
     <button class="btn" (click)="open()"><i class="fi fi-rr-door-open"></i>&nbsp;Abrir Loja</button>
     }
 </div>
-<iframe src="http://localhost:4000/information.html" frameborder="0" style="height: 100%;"></iframe>
+<iframe [src]="API_MAIN +'/information.html'" frameborder="0" style="height: 100%;"></iframe>

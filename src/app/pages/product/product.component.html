@@ -95,7 +95,7 @@
 </ng-template>
 
 <ng-template #view>
-    <section class="banner" [ngStyle]="{'background-image' : 'url(http://localhost:4000/' + establishment?.banner + ')'}">
+    <section class="banner" [ngStyle]="{'background-image' : 'url(' + API_MAIN + '/' + establishment?.banner + ')'}">
         <h1>{{establishment?.nome}}</h1>
     </section>
     <section class="categorys">

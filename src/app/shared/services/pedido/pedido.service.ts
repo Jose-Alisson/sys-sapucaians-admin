@@ -5,16 +5,17 @@ import { io } from 'socket.io-client';
 import { Order } from '../../model/order.model';
 import { FileService } from '../file/file.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PedidoService {
 
-  private URL = `http://localhost:8080/order`
+  private URL = `${environment.API_PEDIDOS}/order`
   private http = inject(HttpClient)
 
-  private socket = io('http://localhost:4000');
+  private socket = io(`${environment.API_MAIN}`);
 
   private fileService = inject(FileService)
   private sanitizer = inject(DomSanitizer)

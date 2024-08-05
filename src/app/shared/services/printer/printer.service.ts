@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { io } from 'socket.io-client';
 import { Order } from '../../model/order.model';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrinterService {
 
-  private socket = io('http://localhost:4000');
+  private socket = io(`${environment.API_MAIN}`);
   
   impressoras = new BehaviorSubject<string[]>([])
 
