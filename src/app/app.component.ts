@@ -4,6 +4,8 @@ import { PedidoService } from './shared/services/pedido/pedido.service';
 import { CommonModule } from '@angular/common';
 import { EstablishmentService } from './shared/services/establishment/establishment.service';
 import { environment } from '../environments/environment';
+import { Title } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +23,7 @@ export class AppComponent {
   router = inject(Router)
   pedidoService = inject(PedidoService)
   private establishmentService = inject(EstablishmentService)
+  private title = inject(Title)
 
   protected establishment: any
 
@@ -31,11 +34,9 @@ export class AppComponent {
       }
     });
 
-  
     this.establishmentService.getEstablishment().subscribe(data => {
       this.establishment = data
+      this.title.setTitle(`${data.ClientNome} | Admin`)
     })
   }
-
-  
 }

@@ -15,7 +15,9 @@ export class PedidoService {
   private URL = `${environment.API_PEDIDOS}order`
   private http = inject(HttpClient)
 
-  private socket = io(`${environment.API_MAIN_SOCKET}`);
+  private socket = io(`${environment.API_MAIN_SOCKET}`, {
+    transports: ['websocket']
+  });
 
   private fileService = inject(FileService)
   private sanitizer = inject(DomSanitizer)

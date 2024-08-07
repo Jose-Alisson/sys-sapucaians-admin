@@ -9,7 +9,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class EstablishmentService {
 
-  private soc = io(`${environment.API_MAIN_SOCKET}`)
+  private soc = io(`${environment.API_MAIN_SOCKET}`, {
+    transports: ['websocket']
+  })
 
   private URL = `${environment.API_MAIN}/establishment`
   private http = inject(HttpClient)

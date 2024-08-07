@@ -9,7 +9,9 @@ import { environment } from '../../../../environments/environment';
 })
 export class PrinterService {
 
-  private socket = io(`${environment.API_MAIN_SOCKET}`);
+  private socket = io(`${environment.API_MAIN_SOCKET}`, {
+    transports: ['websocket']
+  });
   
   impressoras = new BehaviorSubject<string[]>([])
 
