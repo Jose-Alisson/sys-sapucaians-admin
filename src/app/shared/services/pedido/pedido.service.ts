@@ -12,10 +12,10 @@ import { environment } from '../../../../environments/environment';
 })
 export class PedidoService {
 
-  private URL = `${environment.API_PEDIDOS}/order`
+  private URL = `${environment.API_PEDIDOS}order`
   private http = inject(HttpClient)
 
-  private socket = io(`${environment.API_MAIN}`);
+  private socket = io(`${environment.API_MAIN_SOCKET}`);
 
   private fileService = inject(FileService)
   private sanitizer = inject(DomSanitizer)

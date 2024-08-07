@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class EstablishmentService {
 
-  private soc = io(`${environment.API_MAIN}`)
+  private soc = io(`${environment.API_MAIN_SOCKET}`)
 
   private URL = `${environment.API_MAIN}/establishment`
   private http = inject(HttpClient)
