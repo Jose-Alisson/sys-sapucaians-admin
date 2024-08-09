@@ -68,7 +68,6 @@ export class ProductComponent {
   constructor() {
     this.productService.getAllToCategory().subscribe(data => {
       this.categorys = data
-      console.log(data)
     })
 
     this.establishmentService.getEstablishment().subscribe(data => {
@@ -77,7 +76,6 @@ export class ProductComponent {
   }
 
   remover(add: AdditionalManager) {
-    console.log(add)
     let i = this.product?.additional.findIndex(a => a === add) ?? -1
 
     if(i != -1){
@@ -155,7 +153,6 @@ export class ProductComponent {
         })
       }
     } else {
-      console.log(this.productForm)
       this.viewAllErrors = true
     }
   }
