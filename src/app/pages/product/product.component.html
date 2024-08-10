@@ -81,6 +81,18 @@
                         <app-validate validatorName="required" message="O Campo é obrigatorio" [viewAllError]="viewAllErrors"></app-validate>
                     </app-input>
                 </div>
+                <div class="check" (click)="productForm.controls.available.setValue(!productForm.controls.available.value)">
+                    <input type="checkbox" name="" id="" formControlName="available">
+                    <div>
+                        <p class="name">Disponivel</p>
+                    </div>
+                </div>
+                <div class="check" (click)="productForm.controls.visible.setValue(!productForm.controls.visible.value)">
+                    <input type="checkbox" name="" id="" formControlName="visible" >
+                    <div>
+                        <p class="name">Visivel</p>
+                    </div>
+                </div>
             </div>
         </div>
 

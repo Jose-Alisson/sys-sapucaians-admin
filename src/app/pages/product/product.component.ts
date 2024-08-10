@@ -51,6 +51,8 @@ export class ProductComponent {
     description: [''],
     price: [0, [Validators.required]],
     category: ['', [Validators.required]],
+    available: [true, [Validators.required]],
+    visible: [true, [Validators.required]]
   })
 
   protected page: 'view' | 'create' = 'view'
@@ -78,12 +80,12 @@ export class ProductComponent {
   remover(add: AdditionalManager) {
     let i = this.product?.additional.findIndex(a => a === add) ?? -1
 
-    if(i != -1){
+    if (i != -1) {
       this.product?.additional.splice(i, 1)
     }
   }
 
-  async save() {
+  async save() { /*
     if (this.productForm.valid) {
       let product: Product = {
         id: undefined,
@@ -92,7 +94,9 @@ export class ProductComponent {
         description: this.productForm.controls.description.value || '',
         price: this.productForm.controls.price.value || 0,
         category: this.productForm.controls.category.value || '',
-        additional: this.product?.additional || []
+        additional: this.product?.additional || [],
+        available: true,
+        visible: true
       }
 
       if (this.uploadFile?.isSelected()) {
@@ -124,6 +128,8 @@ export class ProductComponent {
             })
           }
 
+          this.clean()
+
           this.page = 'view'
         })
       } else {
@@ -149,12 +155,14 @@ export class ProductComponent {
               products: [data]
             })
           }
+          this.clean()
           this.page = 'view'
         })
       }
     } else {
       this.viewAllErrors = true
-    }
+    }*/
+   console.log(this.productForm.value)
   }
 
   clean() {
@@ -162,9 +170,11 @@ export class ProductComponent {
 
     this.productForm = this.form.group({
       name: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: [''],
       price: [0, [Validators.required]],
       category: ['', [Validators.required]],
+      available: [true, [Validators.required]],
+      visible: [true, [Validators.required]]
     })
 
     this.addtionalForm = this.form.group({
@@ -194,7 +204,9 @@ export class ProductComponent {
       name: this.product.name,
       description: this.product.description,
       price: this.product.price,
-      category: this.product.category || ''
+      category: this.product.category || '',
+      available: this.product.available || true,
+      visible: this.product.visible || true
     })
   }
 }

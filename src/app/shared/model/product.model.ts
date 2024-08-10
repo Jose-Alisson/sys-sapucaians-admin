@@ -9,5 +9,7 @@ export declare interface Product{
     description: string 
     price: number 
     category: string | undefined | null
+    available: boolean | undefined
+    visible: boolean | undefined
     additional: AdditionalManager[]
 }
