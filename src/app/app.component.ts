@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
       const head = document.head;
       const link = this.renderer.createElement('link');
       this.renderer.setAttribute(link, 'rel', 'stylesheet');
-      this.renderer.setAttribute(link, 'href', 'http://localhost/main/style.css');
+      this.renderer.setAttribute(link, 'href', `${environment.API_MAIN}/style.css`);
       this.renderer.appendChild(head, link);
     }
   }
