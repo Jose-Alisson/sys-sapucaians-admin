@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, HostListener, input, Input, Output, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, inject, input, Input, Output, signal, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
   selector: 'app-dropdown',
@@ -8,10 +9,14 @@ import { Component, ElementRef, EventEmitter, HostListener, input, Input, Output
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss'
 })
-export class DropdownComponent {
+export class DropdownComponent implements ControlValueAccessor {
+
+
+
+
 
   @ViewChild('dropdown') dropdownElement?: ElementRef;
-  
+
   @Input()
   title = ''
 
@@ -26,17 +31,41 @@ export class DropdownComponent {
   @Input()
   options: string[] = []
 
-  sinalizar(){
+  protected onChange?: (value: string) => {}
+
+  private ngControl = inject(NgControl, { optional: true })
+
+  constructor() {
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this
+    }
+  }
+
+  sinalizar() {
     this.selectEvent.emit(this.select)
   }
 
-  reset(){
+  reset() {
     this.select = ''
   }
 
-  setValue(value: string){
+  setValue(value: string) {
     this.select = value
     this.title = value
+  }
+
+  writeValue(obj: any): void {
+    this.select = obj
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn
+  }
+
+  registerOnTouched(fn: any): void {
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
   }
 
   @HostListener('document:click', ['$event'])

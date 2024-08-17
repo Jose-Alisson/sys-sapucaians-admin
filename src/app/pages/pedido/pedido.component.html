@@ -9,9 +9,9 @@
                 <div class="dates">
                     <div class="slider">
                         @for (item of dates; track $index) {
-                        <span [ngClass]="{'active': date === item}" (click)="loadOrdersByDate(item);date = item">{{item
-                            |
-                            date}}</span>
+                        <span [ngClass]="{'active': date === item, 'content' : (counterNewByDate(item) || 0) > 0}"
+                            (click)="date = item; loadOrdersByDate(item);"
+                            [attr.counter]="counterNewByDate(item)">{{item | date}}</span>
                         }
                     </div>
                 </div>
@@ -126,6 +126,7 @@
 
     </div>
 </app-sidebar>
+
 @if (order) {
 @if (!viewMenu) {
 <div class="order-actions">
@@ -136,7 +137,7 @@
     <div class="side-right">
         <!-- <button class="btn" (click)="print()"><i class="fi fi-rr-print"></i>&nbsp;Imprimir</button> -->
         <!-- <button class="btn"><i class="fi fi-rr-apps-add"></i>&nbsp;Adicionar produto</button> -->
-        <app-button-printer (printEvent)="print($event)" [options]="impressoras"></app-button-printer>
+        <app-button-printer [title]="'Imprimir'" [options]="impressoras" [order]="order"></app-button-printer>
     </div>
 </div>
 <div class="box">
@@ -173,7 +174,11 @@
                                     <strong>({{getAttributeList(p?.additional)}})</strong> <br>
                                     {{p?.observation}}
                                     } @else {
+                                    @if (p.observation; as observation) {
+                                    {{ observation }}
+                                    }@else {
                                     {{ p.product.description }}
+                                    }
                                     }
                                 </p>
                             </span>
@@ -222,22 +227,26 @@
     </div>
 </div>
 <div class="box">
-    <app-dropdown-slider [title]="'Informções de cliente'">
+    <app-dropdown-slider [title]="'Informações do cliente'">
         <div class="form" [formGroup]="clienteForm">
-            <div class="box-field">
+            <!-- <div class="box-field">
                 <div class="field">
                     <input id="name" type="text" placeholder="Nome" required formControlName="name">
                     <label for="name">Nome</label>
                 </div>
                 <div class="validate"></div>
-            </div>
-            <div class="box-field">
+            </div> -->
+            <app-input title="Nome" formControlName="name">
+            </app-input>
+            <!-- <div class="box-field">
                 <div class="field">
                     <input id="cellphone" type="text" placeholder="Telefone" required formControlName="cellPhone">
                     <label for="cellphone">Telefone</label>
                 </div>
                 <div class="validate"></div>
-            </div>
+            </div> -->
+            <app-input title="Telefone" formControlName="cellPhone">
+            </app-input>
         </div>
     </app-dropdown-slider>
     <!-- </div>

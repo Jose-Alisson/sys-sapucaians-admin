@@ -1,0 +1,9 @@
+<div class="box-field">
+    <div class="field">
+        <input [id]="name" type="text" [type]="type()" [placeholder]="title" [(ngModel)]="value" (focus)="OnTouched && OnTouched()" (input)="onChange && onChange(value)" [prefix]="prefix()" [mask]="mask()" [dropSpecialCharacters]="dropCharacter()" [specialCharacters]="specialCharecter()" required>
+        <label [for]="name">{{title}}</label>
+    </div>
+    <div class="validate">
+        <ng-content></ng-content>
+    </div>
+</div>

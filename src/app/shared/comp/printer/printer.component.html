@@ -1,0 +1,30 @@
+<section>
+    <div class="preview">
+      @if (view) {
+      <img [src]="view" alt="">
+      }
+      <canvas #label class="canv"></canvas>
+    </div>
+    <div class="config">
+      <div class="options" [formGroup]="config">
+        <h2>Imprimir</h2>
+        <div class="row">
+          <p>Impressora</p>
+          <app-dropdown [title]="'Padrão'" [options]="impressoras" formControlName="printer"></app-dropdown>
+        </div>
+        <div class="row">
+          <p>Largura em MM</p>
+          <app-input type="number" [title]="'Largura'" formControlName="width"></app-input>
+        </div>
+        <div class="row">
+          <p>Altura em MM</p>
+          <app-input type="number" [title]="'Altura'" formControlName="height"></app-input>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn" (click)="print()"><i class="fi fi-rr-print"></i>&nbsp;Imprimir</button>
+        <button class="btn-ligth" (click)="cancel()"><i
+            class="fi fi-rr-document-circle-wrong"></i>&nbsp;Cancelar</button>
+      </div>
+    </div>
+  </section>

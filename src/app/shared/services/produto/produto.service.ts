@@ -28,6 +28,10 @@ export class ProdutoService {
     return this.http.put<Product>(`${this.URL}/${id}/update`, product)
   }
 
+  delete(id: number){
+    return this.http.delete<any>(`${this.URL}/${id}/delete`)
+  }
+
   getAllToCategory() {
     return this.http.get<category[]>(`${this.URL}/sortByCategory`).pipe(tap(categorys => {
       categorys.forEach(category => {

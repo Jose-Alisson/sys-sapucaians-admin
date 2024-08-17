@@ -16,15 +16,20 @@ import { CartService } from '../../shared/services/cart/cart.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UpdateStatusComponent } from "../../shared/comp/update-status/update-status.component";
 import { ButtonPrinterComponent } from "../../shared/comp/button-printer/button-printer.component";
+import { InputMaskComponent } from "../../shared/comp/form/input-mask/input-mask.component";
+import { ValidateComponent } from "../../shared/comp/form/validate/validate.component";
+import { InputComponent } from '../../shared/comp/form/input/input.component';
+import { ModalComponent } from "../../shared/comp/modal/modal.component";
+import { PrinterComponent } from "../../shared/comp/printer/printer.component";
 
 @Component({
   selector: 'app-pedido',
   standalone: true,
-  imports: [SidebarComponent, DropdownComponent, JsonPipe, CommonModule, MethodPayComponent, MethodDeliveryComponent, DropdownSliderComponent, MenuComponent, ReactiveFormsModule, UpdateStatusComponent, ButtonPrinterComponent],
+  imports: [SidebarComponent, DropdownComponent, JsonPipe, CommonModule, MethodPayComponent, MethodDeliveryComponent, DropdownSliderComponent, MenuComponent, ReactiveFormsModule, UpdateStatusComponent, ButtonPrinterComponent, InputComponent, ValidateComponent, ModalComponent, PrinterComponent],
   templateUrl: './pedido.component.html',
   styleUrl: './pedido.component.scss'
 })
-export class PedidoComponent{
+export class PedidoComponent {
 
   @ViewChild('sidebar')
   sidebar!: SidebarComponent
@@ -41,8 +46,8 @@ export class PedidoComponent{
 
   form = inject(FormBuilder)
   clienteForm = this.form.group({
-    name: ['', [Validators.required]],
-    cellPhone: ['', [Validators.required]]
+    name: [''],
+    cellPhone: ['']
   })
 
   total = 0
@@ -58,10 +63,6 @@ export class PedidoComponent{
   date?: string
 
   constructor() {
-    // this.pedidoService.wsGetOrders().subscribe(data => {
-    //   this.orders = data
-    // })
-
     this.cartService.total.subscribe((total) => {
       this.total = total
     })
@@ -71,25 +72,30 @@ export class PedidoComponent{
     })
 
     this.pedidoService.getDates().subscribe(data => {
-      this.dates = data.sort((a : any, b : any) => {
+      this.dates = data.sort((a: any, b: any) => {
         const dateA = new Date(a).getTime();
         const dateB = new Date(b).getTime();
         return dateB - dateA;
       });
     })
 
-    this.printerService.listPrinter()
+    this.printerService.impressoras.subscribe(data => {
+      this.impressoras = data
+    })
   }
 
-  getDate(){
-    if(this.date){
+  getDate() {
+    if (this.date) {
       let d = this.date.split('-')
       return `${d[2]}-${d[1]}-${d[0]}`.replaceAll('-', '/')
     } else {
-      return new Date().toLocaleDateString()
+      let d = this.pedidoService.currentDate.split('-')
+      if (d.length > 1) {
+        return `${d[2]}-${d[1]}-${d[0]}`.replaceAll('-', '/')
+      }
+      return ''
     }
   }
-  
 
   preview(order: Order) {
     this.pedidoService.preview(order)
@@ -97,6 +103,10 @@ export class PedidoComponent{
 
   isNew(order: Order) {
     return this.pedidoService.newOrders.some(o => o.id === order.id)
+  }
+
+  counterNewByDate(date: string){
+    return this.pedidoService.newOrders.reduce((counter, order) => order.dateCreation.split('T')[0] === date ? counter + 1 : counter, 0)
   }
 
   getOrdersByStatus(status: string) {
@@ -123,18 +133,6 @@ export class PedidoComponent{
 
   decrement(amount: Amount) {
     this.cartService.decrement(amount)
-    // if(amount.quantity > 1){
-    //   amount.quantity--;
-    // } else {
-    //   let index = this.order?.amounts?.findIndex(a => a === amount) || 0
-
-    //   if(index != -1){
-    //     this.order?.amounts?.splice(index,1)
-    //   }
-    // }
-    // if(this.order){
-    //   this.setTotal(this.order)
-    // }
   }
 
   getAmountValue(amount: Amount) {
@@ -176,7 +174,7 @@ export class PedidoComponent{
     this.preview(order)
   }
 
-  loadOrdersByDate(date: string){
+  loadOrdersByDate(date: string) {
     this.pedidoService.loadOrdersByDate(date)
   }
 
@@ -192,67 +190,60 @@ export class PedidoComponent{
       dateCreation: '',
       status: undefined
     }
-
-    console.log(pedido)
-
-    //this.order = pedido
-
     this.pedidoService.create(pedido).subscribe(data => {
-      //this.order = data
-
       this.clean()
       this.order = undefined
     })
-
   }
 
-  print(name: string) {
-    if (this.order) {
+ 
 
-      let date = new Date(this.order.dateCreation)
+    
+//     if (this.order) {
 
-      const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-      const formattedTime = date.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit',  hour12: true}).slice(0, 5);
-      let page =
-        `
-# Pizzaria Sapucaian's
-Hora: 
-${formattedDate} - ${formattedTime}
-ID do pedido: ${this.order.id}
-Nome do cliente: ${this.order.name}
-___
-Telefone: ${this.order.cellPhone}
-Endereço: ${this.order.address}
-___
-Produtos:
-${this.getProductPage()}
-Forma de pagamaento: ${this.order.payment}
-___
-Total:
-${this.getPrice(this.order).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-`
-      this.printerService.printer(name, page)
-    }
-  }
+//       let date = new Date(this.order.dateCreation)
 
-  private getProductPage() {
-    let products = ''
+//       const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+//       const formattedTime = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', hour12: true }).slice(0, 5);
+//       let page =
+//         `
+// # Pizzaria Sapucaian's
+// Hora: 
+// ${formattedDate} - ${formattedTime}
+// ID do pedido: ${this.order.id}
+// Nome do cliente: ${this.order.name}
+// ___
+// Telefone: ${this.order.cellPhone}
+// Endereço: ${this.order.address}
+// ___
+// Produtos:
+// ${this.getProductPage()}
+// Forma de pagamaento: ${this.order.payment}
+// ___
+// Total:
+// ${this.getPrice(this.order).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+// `
+//       this.printerService.printer(name, page)
+//     }
 
-    this.order?.amounts?.forEach((amount: Amount) => {
-      let total = amount.product.price
-      let additionals = ''
+  // private getProductPage() {
+  //   let products = ''
 
-      amount.additional?.forEach(additional => {
-        total += additional.price
-        additionals += ' ' + additional.name + '\n'
-      })
+  //   this.order?.amounts?.forEach((amount: Amount) => {
+  //     let total = amount.product.price
+  //     let additionals = ''
 
-      let product = `x${amount.quantity} ${amount.product.name} ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`
-      product += additionals
-      products += product
-    })
-    return products
-  }
+  //     amount.additional?.forEach(additional => {
+  //       total += additional.price
+  //       additionals += ' ' + additional.name + '\n'
+  //     })
+
+  //     let product = `x${amount.quantity} ${amount.product.name} ${total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n`
+  //     product += additionals
+  //     products += product
+  //   })
+  //   return products
+  // }
 
   clean() {
 
@@ -280,9 +271,6 @@ ${this.getPrice(this.order).toLocaleString('pt-BR', { style: 'currency', currenc
     this.viewMenu = true
   }
 
-  salvar() {
-
-  }
 
   updateStatus(status: string) {
     if (this.order) {
@@ -305,8 +293,13 @@ ${this.getPrice(this.order).toLocaleString('pt-BR', { style: 'currency', currenc
           break;
       }
       this.order.status = s
+
+      this.order.name = this.clienteForm.controls.name.value || 'Não identificado';
+      this.order.cellPhone = this.clienteForm.controls.cellPhone.value || ''
+      this.order.payment = this.mtdPay.getMethodPayment()
+      this.order.address = this.mtdDelivery.getMethodDelivery()
+
       this.pedidoService.update(this.order?.id || 0, this.order).subscribe(data => {
-        //this.clean()
         this.clean()
         this.order = undefined
       })

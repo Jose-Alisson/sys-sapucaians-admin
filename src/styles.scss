@@ -120,7 +120,7 @@ h5 {
     }
 }
 
-.btn, .btn-darken {
+.btn, .btn-darken, .btn-ligth {
     padding: 15px 25px;
     border: 0;
     cursor: pointer;
@@ -137,6 +137,13 @@ h5 {
     &:not(&.not-span):hover {
         transform: scale(0.95, 0.95);
     }
+}
+
+.btn-ligth{
+    color: $color-primary;
+    background: transparent;
+    border: 2px solid color-mix(in srgb, $color-primary 70%, transparent);
+    box-shadow: none;
 }
 
 .btn-darken{

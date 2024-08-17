@@ -12,11 +12,12 @@ import { environment } from '../../../../environments/environment';
 })
 export class PedidoService {
 
-  private URL = `${environment.API_PEDIDOS}order`
+  private URL = `${environment.API_PEDIDOS}/order`
   private http = inject(HttpClient)
 
   private socket = io(`${environment.API_MAIN_SOCKET}`, {
-    transports: ['websocket']
+    transports: ['websocket'],
+    path: '/main'
   });
 
   private fileService = inject(FileService)
@@ -25,7 +26,13 @@ export class PedidoService {
   orders: Order[] = []
   newOrders: Order[] = []
 
+  currentDate = ''
+
   constructor() {
+    this.socket.on('currentDate', (date) => {
+      this.currentDate = date
+    })
+
     this.socket.on('new-orders', (newOrders) => {
       this.newOrders = newOrders
     })

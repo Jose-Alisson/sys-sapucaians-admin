@@ -31,6 +31,7 @@
             color: rgba(0 0 0 / 70%);
             cursor: pointer;
             text-wrap: nowrap;
+            position: relative;
 
             &:hover {
                 color: color-mix(in srgb, $color-primary 75%, black);
@@ -40,6 +41,26 @@
             &.active {
                 color: color-mix(in srgb, $color-primary 75%, black);
                 background: color-mix(in srgb, $color-primary 25%, transparent);
+            }
+
+            &::before {
+                content: attr(counter);
+                top: -5px;
+                right: 5px;
+                display: none;
+                position: absolute;
+                padding: 0px 5px;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+                background: color-mix(in srgb, $color-primary, rgba(0 0 0 / 17%));
+                border-radius: 20px;
+                color: white;
+            }
+
+            &.content::before {
+                display: flex;
             }
         }
 

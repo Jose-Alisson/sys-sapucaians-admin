@@ -35,10 +35,14 @@
     <div class="create">
         <div style="display: flex;justify-content: space-between;">
             <button (click)="page='view';clean()" class="btn"><i class="fi fi-rr-arrow-left"></i>&nbsp;Voltar</button>
-            <button class="btn" (click)="save()"><i class="fi fi-rr-floppy-disk-pen"></i>&nbsp;Salvar</button>
+            <!-- <button class="btn" (click)="save()"><i class="fi fi-rr-floppy-disk-pen"></i>&nbsp;Salvar</button> -->
         </div>
         <div class="box fc">
+            <h2 class="title">Imagem do Produto</h2>
             <app-upload-file #uploadFile [img]="product?.photoObject"></app-upload-file>
+        </div>
+        <div class="box fc">
+            <h2 class="title">Informações do produto</h2>
             <div class="form" [formGroup]="productForm">
                 <!-- <div class="box-field">
                     <div class="field">
@@ -48,7 +52,8 @@
                     <div class="validate"></div>
                 </div> -->
                 <app-input title="Nome do produto" formControlName="name">
-                    <app-validate validatorName="required" message="O Campo é obrigatorio" [viewAllError]="viewAllErrors"></app-validate>
+                    <app-validate validatorName="required" message="O Campo é obrigatorio"
+                        [viewAllError]="viewAllErrors"></app-validate>
                 </app-input>
 
                 <div class="box-field">
@@ -57,7 +62,10 @@
                             formControlName="description"></textarea>
                         <label for="description">Descrição</label>
                     </div>
-                    <div class="validate"></div>
+                    <div class="validate">
+                        <app-validate [control]="productForm.controls.description" [validatorName]="'maxlength'"
+                            [message]="'Limite de 255 caracteres excedido.'"></app-validate>
+                    </div>
                 </div>
                 <div class="unique">
                     <!-- <div class="box-field">
@@ -67,9 +75,10 @@
                         </div>
                         <div class="validate"></div>
                     </div> -->
-                    <app-input title="preço" formControlName="price">
-                        <app-validate validatorName="required" message="O Campo é obrigatorio" [viewAllError]="viewAllErrors"></app-validate>
-                    </app-input>
+                    <app-input-mask title="preço" formControlName="price">
+                        <app-validate validatorName="required" message="O Campo é obrigatorio"
+                            [viewAllError]="viewAllErrors"></app-validate>
+                    </app-input-mask>
                     <!-- <div class="box-field">
                         <div class="field">
                             <input id="category" type="text" placeholder="category" required formControlName="category">
@@ -78,20 +87,26 @@
                         <div class="validate"></div>
                     </div> -->
                     <app-input title="Categoria" formControlName="category">
-                        <app-validate validatorName="required" message="O Campo é obrigatorio" [viewAllError]="viewAllErrors"></app-validate>
+                        <app-validate validatorName="required" message="O Campo é obrigatorio"
+                            [viewAllError]="viewAllErrors"></app-validate>
                     </app-input>
                 </div>
-                <div class="check" (click)="productForm.controls.available.setValue(!productForm.controls.available.value)">
-                    <input type="checkbox" name="" id="" formControlName="available">
-                    <div>
-                        <p class="name">Disponivel</p>
-                    </div>
+
+            </div>
+        </div>
+
+        <div class="box fc" [formGroup]="productForm">
+            <h2 class="title">Visibilidade</h2>
+            <div class="check" (click)="productForm.controls.available.setValue(!productForm.controls.available.value)">
+                <input type="checkbox" name="" id="" formControlName="available">
+                <div>
+                    <p class="name">Disponivel</p>
                 </div>
-                <div class="check" (click)="productForm.controls.visible.setValue(!productForm.controls.visible.value)">
-                    <input type="checkbox" name="" id="" formControlName="visible" >
-                    <div>
-                        <p class="name">Visivel</p>
-                    </div>
+            </div>
+            <div class="check" (click)="productForm.controls.visible.setValue(!productForm.controls.visible.value)">
+                <input type="checkbox" name="" id="" formControlName="visible">
+                <div>
+                    <p class="name">Visivel</p>
                 </div>
             </div>
         </div>
@@ -100,8 +115,19 @@
             <button class="btn not-span" (click)="mCreate.active = true"><i
                     class="fi fi-rr-apps-add"></i>&nbsp;Adicionar</button>
             @for (item of product?.additional; track $index) {
-            <app-adicionais-create [title]="item.name" [additional]="item" (removerEvent)="remover($event)"></app-adicionais-create>
+            <app-adicionais-create [title]="item.name" [additional]="item"
+                (removerEvent)="remover($event)"></app-adicionais-create>
             }
+        </div>
+        <div class="box fc">
+            <div class="row" style="display: flex;gap: 12px;">
+                <button class="btn" (click)="save()"><i class="fi fi-rr-floppy-disk-pen"></i>&nbsp;Salvar</button>
+                @if (product?.id) {
+                <button class="btn btn-dlt" (click)="delete()"><i
+                        class="fi fi-rr-trash-xmark"></i>&nbsp;Deletar</button>
+                }
+            </div>
+
         </div>
     </div>
 </ng-template>

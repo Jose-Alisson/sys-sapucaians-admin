@@ -4,15 +4,10 @@
         <span class="arrow"><i class="fi fi-rr-caret-up"></i></span>
     </div>
     <div class="wrapper-body floating">
-        <!-- @if (isExistContent) {
-        <ng-content></ng-content>[ngClass]="{'floating' : !isExistContent}"
-        } 
-        @else{ -->
         <ul>
             @for (option of options; track $index) {
-            <li (click)="title = option;select = option ; sinalizar(); active = false">{{option}}</li>
+            <li (click)="title = option;select = option ; sinalizar(); active = false; onChange && onChange(select)">{{option}}</li>
             }
         </ul>
-        <!-- } -->
     </div>
 </div>

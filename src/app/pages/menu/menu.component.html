@@ -14,7 +14,11 @@
                         {{item?.observation}}
 
                         } @else {
+                        @if (item.observation; as observation) {
+                        {{ observation }}
+                        } @else{
                         {{ item.product.description }}
+                        }
                         }
                     </p>
                     <div class="unique" style="margin-top: 4px;">
@@ -200,7 +204,7 @@
                         <p class="max">{{observation.value?.length}} / 255</p>
                     </div>
                     <div class="sub-total">
-                        @if(establishment.isOpen){
+                        @if(establishment?.isOpen){
                         <div class="counter">
                             <span class="minus" (click)="decrement()">
                                 <i class="fi fi-rr-minus-small"></i>

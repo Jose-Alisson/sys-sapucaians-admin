@@ -16,11 +16,12 @@ import { EstablishmentService } from '../../shared/services/establishment/establ
 import { InputComponent } from "../../shared/comp/form/input/input.component";
 import { ValidateComponent } from "../../shared/comp/form/validate/validate.component";
 import { environment } from '../../../environments/environment';
+import { InputMaskComponent } from "../../shared/comp/form/input-mask/input-mask.component";
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CurrencyPipe, ModalComponent, AdicionaisComponent, ReactiveFormsModule, UploadFileComponent, CommonModule, AdicionaisCreateComponent, InputComponent, ValidateComponent],
+  imports: [CurrencyPipe, ModalComponent, AdicionaisComponent, ReactiveFormsModule, UploadFileComponent, CommonModule, AdicionaisCreateComponent, InputComponent, ValidateComponent, InputMaskComponent],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss'
 })
@@ -48,11 +49,11 @@ export class ProductComponent {
 
   protected productForm = this.form.group({
     name: ['', [Validators.required]],
-    description: [''],
+    description: ['', [Validators.maxLength(255)]],
     price: [0, [Validators.required]],
     category: ['', [Validators.required]],
-    available: [true, [Validators.required]],
-    visible: [true, [Validators.required]]
+    available: [false, [Validators.required]],
+    visible: [false, [Validators.required]]
   })
 
   protected page: 'view' | 'create' = 'view'
@@ -85,7 +86,7 @@ export class ProductComponent {
     }
   }
 
-  async save() { /*
+  async save() {
     if (this.productForm.valid) {
       let product: Product = {
         id: undefined,
@@ -95,8 +96,8 @@ export class ProductComponent {
         price: this.productForm.controls.price.value || 0,
         category: this.productForm.controls.category.value || '',
         additional: this.product?.additional || [],
-        available: true,
-        visible: true
+        available: this.productForm.controls.available.value || false,
+        visible: this.productForm.controls.visible.value || false
       }
 
       if (this.uploadFile?.isSelected()) {
@@ -161,8 +162,7 @@ export class ProductComponent {
       }
     } else {
       this.viewAllErrors = true
-    }*/
-   console.log(this.productForm.value)
+    }
   }
 
   clean() {
@@ -173,8 +173,8 @@ export class ProductComponent {
       description: [''],
       price: [0, [Validators.required]],
       category: ['', [Validators.required]],
-      available: [true, [Validators.required]],
-      visible: [true, [Validators.required]]
+      available: [false, [Validators.required]],
+      visible: [false, [Validators.required]]
     })
 
     this.addtionalForm = this.form.group({
@@ -182,6 +182,8 @@ export class ProductComponent {
       min: [0, [Validators.required]],
       max: [0, [Validators.required]]
     })
+
+    this.viewAllErrors = false
   }
 
   addAditionalToProduct() {
@@ -205,8 +207,20 @@ export class ProductComponent {
       description: this.product.description,
       price: this.product.price,
       category: this.product.category || '',
-      available: this.product.available || true,
-      visible: this.product.visible || true
+      available: this.product.available || false,
+      visible: this.product.visible || false
+    })
+  }
+
+  delete(){
+    this.productService.delete(this.product?.id ?? 0).subscribe(data => {
+      let index = this.categorys.findIndex(c => c.products.some(p => p.id === this.product?.id))
+      if(index != -1){
+        this.categorys[index].products = this.categorys[index].products.filter(p => p.id != this.product?.id)
+      }
+
+      this.clean()
+      this.page = 'view'
     })
   }
 }

@@ -1,3 +1,7 @@
+<app-modal [title]="'Impressão'" #configPrinter>
+    <app-printer style="width: 80dvw;" #printer (cancelEvent)="configPrinter.active = false"></app-printer>
+</app-modal>
+
 <div style="display: flex;" #dropdown>
     <button class="btn" (click)="execute()"><i class="fi fi-rr-print"></i>&nbsp;{{title}}</button>
     <div class="wrapper">
@@ -8,10 +12,10 @@
         <div class="wrapper-body floating">
             <ul>
                 @for (option of options; track $index) {
-                <li (click)="title = option;select = option ; sinalizar(); active = false">{{option}}</li>
+                <li (click)="title = option;select = option; sinalizar(); active = false">{{option}}</li>
                 }
+                <li (click)="configPrinter.active = true; printer.loadOrder(order); printer.preview(order)">Configurações</li>
             </ul>
-            <!-- } -->
         </div>
     </div>
 </div>

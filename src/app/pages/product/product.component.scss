@@ -27,6 +27,10 @@
     background: white;
     padding: 1em;
     border-radius: 7px;
+
+    .title{
+        color: $color-primary;
+    }
 }
 
 .create {
@@ -346,6 +350,7 @@ app-input{
     min-height: 50px;
     cursor: pointer;
     transition: 0.2s;
+    width: fit-content;
 
     input[type="checkbox"] {
         width: 20px;
@@ -357,4 +362,9 @@ app-input{
         opacity: 0.5;
         pointer-events: none;
     }
+}
+
+.btn-dlt {
+    --color-primary: tomato !important;
+    width: fit-content;
 }

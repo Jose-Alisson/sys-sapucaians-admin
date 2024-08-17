@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, ContentChildren, inject, Input, input, OnInit, Optional, QueryList } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ContentChildren, inject, Input, input, OnInit, Optional, QueryList, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NgControl } from '@angular/forms';
 import { ValidateComponent } from '../validate/validate.component';
 
@@ -7,7 +7,8 @@ import { ValidateComponent } from '../validate/validate.component';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './input.component.html',
-  styleUrl: './input.component.scss'
+  styleUrl: './input.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class InputComponent implements ControlValueAccessor, AfterContentInit {
 

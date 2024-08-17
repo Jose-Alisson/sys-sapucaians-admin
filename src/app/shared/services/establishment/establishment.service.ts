@@ -10,7 +10,8 @@ import { environment } from '../../../../environments/environment';
 export class EstablishmentService {
 
   private soc = io(`${environment.API_MAIN_SOCKET}`, {
-    transports: ['websocket']
+    transports: ['websocket'],
+    path: '/main'
   })
 
   private URL = `${environment.API_MAIN}/establishment`

@@ -84,8 +84,6 @@ export class MenuComponent implements OnInit {
     }
   }
 
-
-
   //No modal ele diminui a quantidade do item que o cliente quer
   decrement() {
     if (this.counter > 1) {
